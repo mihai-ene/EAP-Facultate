@@ -8,18 +8,36 @@ public class Elev {
     private String dataNasterii;
     private boolean repetent = false;
     private boolean corigent = false;
-    private int nr_absente_nemotivate;
-    private float medieGenerala = 0;
+    private int nr_absente_nemotivate=0;
+    private float medieGenerala =0;
     private HashMap<Materie,ArrayList<Integer>> note = new HashMap<Materie,ArrayList<Integer>>();
     private ArrayList<Absenta> absente = new ArrayList<Absenta>();
 
+    public int getNr_absente_nemotivate() {
+        return nr_absente_nemotivate;
+    }
 
-    public Elev(String nume, String prenume, String dataNasterii){
+    public void setNr_absente_nemotivate(int nr_absente_nemotivate) {
+        this.nr_absente_nemotivate = nr_absente_nemotivate;
+    }
+
+    public Elev(String nume, String prenume, String dataNasterii, boolean repetent, boolean corigent, int nr_absente_nemotivate, float medieGenerala){
         this.nume = nume;
         this.prenume = prenume;
         this.dataNasterii = dataNasterii;
+        this.corigent = corigent;
+        this.repetent = repetent;
+        this.nr_absente_nemotivate = nr_absente_nemotivate;
+        this.medieGenerala = medieGenerala;
     }
+    public Elev(){
 
+    }
+    public Elev(Elev other){
+        this.nume = other.nume;
+        this.prenume = other.prenume;
+        this.dataNasterii = other.dataNasterii;
+    }
     public String getNume() {
         return nume;
     }

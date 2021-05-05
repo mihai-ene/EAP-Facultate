@@ -1,4 +1,5 @@
 import java.lang.ref.PhantomReference;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -7,8 +8,38 @@ import java.util.Scanner;
 public class Catalog {
     private ArrayList<Elev> elevi = new ArrayList<Elev>();
     private String anScolar; //ex 2020-2021
+    private ArrayList<Materie> materii = new ArrayList<Materie>();
 
-    public Catalog(String anScolar) {
+    public Catalog(){
+
+    }
+    public ArrayList<Materie> getMaterii() {
+        return materii;
+    }
+
+    public void setMaterii(ArrayList<Materie> materii) {
+        this.materii = materii;
+    }
+
+    public ArrayList<Elev> getElevi() {
+        return elevi;
+    }
+
+    public void setElevi(ArrayList<Elev> elevi) {
+        this.elevi = elevi;
+    }
+
+    public String getAnScolar() {
+        return anScolar;
+    }
+
+    public void setAnScolar(String anScolar) {
+        this.anScolar = anScolar;
+    }
+
+    public Catalog(ArrayList<Elev> elevi, ArrayList<Materie> materii, String anScolar) {
+        this.elevi = elevi;
+        this.materii = materii;
         this.anScolar = anScolar;
     }
 
@@ -57,7 +88,7 @@ public class Catalog {
         System.out.println();
     }
 
-    private int calculareMedieMaterie(Elev x, Materie m) {
+    public int calculareMedieMaterie(Elev x, Materie m) {
         if (x.getNote().containsKey(m)) {
             float sumanote = 0;
             for (int nota : x.getNote().get(m))
@@ -72,14 +103,12 @@ public class Catalog {
             System.out.println(x.getNume() + " " + x.getPrenume() + " are media " + calculareMedieMaterie(x,m) + " la " + m.getDenumire());
     }
 
-    public void afisareMedieGenerala(Elev x){
+    public float calculeazaMedieGenerala(Elev x){
         float mediematerii = 0;
         for (Materie m: x.getNote().keySet()){
             mediematerii+= calculareMedieMaterie(x,m);
         }
-        System.out.print(x.getNume() + " " + x.getPrenume() + " are media generala ");
-        System.out.printf("%.2f",mediematerii/x.getNote().keySet().size());
-        System.out.println();
+        return(mediematerii/x.getNote().keySet().size());
     }
 
     public void calculareAbsenteNemotivate(Elev x){
@@ -97,14 +126,12 @@ public class Catalog {
                 elev.setCorigent(true);
             }
         if(corigenti.size()==0)
-            System.out.println("Nu sunt elevi corigenti la aceasta materie");
+            System.out.println("Nu sunt elevi corigenti la " + m.getDenumire()+"\n");
         else {
-            System.out.println("--------------------------");
+            System.out.println("Elevi corigenti la " + m.getDenumire() + ":");
             for (Elev elev : corigenti) {
-                System.out.println("Elevi corigenti la " + m.getDenumire() + ":");
-                System.out.println(elev.getNume() + " " + elev.getPrenume());
+                System.out.println("- "+elev.getNume() + " " + elev.getPrenume());
             }
-            System.out.println("--------------------------");
             System.out.println();
         }
     }
@@ -130,16 +157,14 @@ public class Catalog {
                 }
             }
             if(eleviRepetenti.size()>0) {
-                System.out.println("--------------------------");
                 System.out.println("Elevi repetenti: ");
                 for (Elev elev : eleviRepetenti) {
                     System.out.println(elev.getNume() + " " + elev.getPrenume());
                 }
-                System.out.println("--------------------------");
                 System.out.println();
             }
             else
-                System.out.println("Nu sunt elevi repetenti");
+                System.out.println("Nu sunt elevi repetenti\n");
     }
 
     public void sortareDupaMedie(){
@@ -163,13 +188,11 @@ public class Catalog {
     public void sortareDupaNume(){
         Comparator<Elev> c = (s1, s2) -> (int) ((s1.getNume() + " " + s1.getPrenume()).compareTo(s2.getNume() + " " + s2.getPrenume()));
         this.elevi.sort(c);
-        System.out.println("-------------Elevi sortati dupa nume-------------");
+    }
 
-        for(Elev elev : this.elevi){
-            System.out.println(elev.getNume() + " " + elev.getPrenume());
-        }
-        System.out.println("--------------------------");
-        System.out.println();
+    public void cresteNrAbsenteNemotivate(Elev x){
+        int nr_absente = x.getNrAbsenteNemotivate();
+        x.setNr_absente_nemotivate(nr_absente+1);
     }
 
     public void toString(Elev x){
@@ -179,6 +202,8 @@ public class Catalog {
         System.out.println("Prenume: " + x.getPrenume());
         System.out.println("Data nasterii: " + x.getData_nasterii());
         System.out.println("Nr. absente nemotivate: " + x.getNrAbsenteNemotivate());
+        System.out.println("Repetent: " + x.isRepetent());
+        System.out.println("Corigent: " + x.isCorigent());
         System.out.println("--------------------------");
         System.out.println();
     }
