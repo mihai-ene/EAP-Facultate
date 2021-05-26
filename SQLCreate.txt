@@ -1,0 +1,56 @@
+CREATE TABLE `profesori` (
+  `profesor_id` int NOT NULL,
+  `NumeProfesor` varchar(45) NOT NULL,
+  `PrenumeProfesor` varchar(45) NOT NULL,
+  `Suplinitor` tinyint NOT NULL DEFAULT '0',
+  `dataInceput` date DEFAULT NULL,
+  `dataFinal` date DEFAULT NULL,
+  PRIMARY KEY (`profesor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `note` (
+  `nota_id` int NOT NULL AUTO_INCREMENT,
+  `elev_id` int NOT NULL,
+  `materie_id` int NOT NULL,
+  `nota` int NOT NULL,
+  PRIMARY KEY (`nota_id`),
+  KEY `elev_id_idx` (`elev_id`),
+  KEY `materie_id_idx` (`materie_id`),
+  CONSTRAINT `elev_id` FOREIGN KEY (`elev_id`) REFERENCES `elevi` (`elev_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `materie_id` FOREIGN KEY (`materie_id`) REFERENCES `materii` (`materie_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `materii` (
+  `materie_id` int NOT NULL,
+  `Denumire` varchar(45) NOT NULL,
+  `profesor_id` int DEFAULT NULL,
+  PRIMARY KEY (`materie_id`),
+  KEY `profesor_id_idx` (`profesor_id`),
+  CONSTRAINT `profesor_id` FOREIGN KEY (`profesor_id`) REFERENCES `profesori` (`profesor_id`) ON DELETE SET NULL ON UPDATE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `listaclaselor` (
+  `clasa_id` int NOT NULL,
+  `Denumire` varchar(45) DEFAULT NULL,
+  `NumeDiriginte` varchar(45) DEFAULT NULL,
+  `PrenumeDiriginte` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`clasa_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `elevi` (
+  `elev_id` int NOT NULL,
+  `clasa_id` int NOT NULL,
+  `Nume` varchar(45) NOT NULL,
+  `Prenume` varchar(45) NOT NULL,
+  `DataNasterii` varchar(45) NOT NULL,
+  `Repetent` tinyint DEFAULT NULL,
+  `Corigent` tinyint DEFAULT NULL,
+  `NrAbsenteNemotivate` int DEFAULT NULL,
+  `MedieGenerala` float DEFAULT NULL,
+  PRIMARY KEY (`elev_id`),
+  UNIQUE KEY `Nume_UNIQUE` (`Nume`),
+  UNIQUE KEY `Prenume_UNIQUE` (`Prenume`),
+  KEY `clasa_id_idx` (`clasa_id`),
+  CONSTRAINT `clasa_id` FOREIGN KEY (`clasa_id`) REFERENCES `listaclaselor` (`clasa_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+SELECT * FROM inchirieriauto.accidente;
